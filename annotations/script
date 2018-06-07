@@ -1,0 +1,37 @@
+
+
+# Download A. digitifera proteins (from Adig_1.1 assembly at NCBI)
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/222/465/GCF_000222465.1_Adig_1.1/GCF_000222465.1_Adig_1.1_protein.faa.gz
+
+# Unzip A. digitifera proteins
+gunzip GCF_000222465.1_Adig_1.1_protein.faa.gz
+
+# Run all A. digitifera proteins through InterProScan
+bsub < adig_ips.sh
+
+# Make a new directory in your nethome for the SwissProt database
+mkdir swissprot && cd swissprot
+
+# Download and unzip the SwissProt database
+wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+gunzip uniprot_sprot.fasta.gz
+
+# Make a BLAST database out of the SwissProt fasta file
+makeblastdb -in uniprot_sprot.fasta -dbtype prot
+
+# BLAST proteins to swissprot database
+cd ..
+blastp -query AF_protein_sequence.txt \
+-db swissprot/uniprot_sprot.fasta \
+-out sprot_blastout.txt \
+-evalue 1e-10 \
+-outfmt 6 \
+-num_alignments 1
+
+# Extract UniProt accessions for Swissprot BLAST hits
+cat sprot_blastout.txt | cut -f2 | sed 's/.*|\(.*\)|.*/\1/' | uniq > uniprot_acc.txt
+
+# Get GO terms associated with each Uniprot accession
+while read acc; do
+curl "http://www.uniprot.org/uniprot/?query=${acc}&format=tab&columns=id%2Cgo" >> test.txt
+done < uniprot_acc.txt
