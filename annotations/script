@@ -1,14 +1,18 @@
 
-
-# Download A. digitifera proteins (from Adig_1.1 assembly at NCBI)
+#### GET ADIG GO ANNOTATION ###########
+# Download A. digitifera v1.1 proteins from NCBI
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/222/465/GCF_000222465.1_Adig_1.1/GCF_000222465.1_Adig_1.1_protein.faa.gz
 
 # Unzip A. digitifera proteins
-gunzip GCF_000222465.1_Adig_1.1_protein.faa.gz
+gunzip -c GCF_000222465.1_Adig_1.1_protein.faa.gz > adig_proteins.faa
 
 # Run all A. digitifera proteins through InterProScan
 bsub < adig_ips.sh
 
+
+
+
+#### GET SWISSPROT DATABASE AND BLAST PROTEINS OF INTEREST ###########
 # Make a new directory in your nethome for the SwissProt database
 mkdir swissprot && cd swissprot
 
@@ -35,3 +39,11 @@ cat sprot_blastout.txt | cut -f2 | sed 's/.*|\(.*\)|.*/\1/' | uniq > uniprot_acc
 while read acc; do
 curl "http://www.uniprot.org/uniprot/?query=${acc}&format=tab&columns=id%2Cgo" >> test.txt
 done < uniprot_acc.txt
+
+
+
+
+
+#### TEST FOR ENRICHMENT ######
+coral_diversified_enrichment_GO_pvals.txt: coral_diversified_pdam_gene_names.txt
+	R --vanilla < ../R/topGO.R --args ../annotation/pdam_genes_GO.txt $< coral_diversified_enrichment
