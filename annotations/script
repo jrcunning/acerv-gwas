@@ -5,13 +5,29 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/222/465/GCF_000222465.1_Adig
 
 # Unzip A. digitifera proteins
 gunzip -c GCF_000222465.1_Adig_1.1_protein.faa.gz > adig_proteins.faa
+rm GCF_*
 
 # Run all A. digitifera proteins through InterProScan
 bsub < adig_ips.sh
 
+# Extract GO terms from InterProScan output
+sed -n 's/\(XP_.........\).*\(GO:.*\)/\1 \2/p' adig_ips.tsv | sort | uniq | awk -F' ' -v OFS=', ' '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' | sed 's/, , /\t/g' > adig_ips_GO.txt
+
+# Extract protein IDs only from AF_protein_sequence.txt
+grep -o 'XP_[0-9]\+' AF_protein_sequence.txt | uniq > AF_protein_ids.txt
+
+# Run topGO enrichment analysis
+R --vanilla < topGO.R --args adig_ips_GO.txt AF_protein_ids.txt AF_topGO_out.txt
+# args: full genome GO terms, names of interesting genes, output file
+
+# Extract protein IDs only from AF_protein_sequence.txt
+grep -o 'XP_[0-9]\+' GBM_protein_sequence.txt | uniq > GBM_protein_ids.txt
+
+# Run topGO enrichment analysis
+R --vanilla < topGO.R --args adig_ips_GO.txt GBM_protein_ids.txt GBM_topGO_out.txt
 
 
-
+# NOT RUN ============
 #### GET SWISSPROT DATABASE AND BLAST PROTEINS OF INTEREST ###########
 # Make a new directory in your nethome for the SwissProt database
 mkdir swissprot && cd swissprot

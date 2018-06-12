@@ -1,0 +1,5 @@
+GO.ID,Term,Annotated,Significant,Expected,Rank in classicFisher,classicFisher,elimFisher,topgoFisher,parentchildFisher
+GO:0030488,tRNA methylation,1,1,0,1,0.00092,0.00092,0.00092,0.063
+GO:0035278,miRNA mediated inhibition of translation,1,1,0,2,0.00092,0.00092,0.00092,0.250
+GO:0097428,protein maturation by iron-sulfur cluste...,3,1,0,5,0.00276,0.00276,0.00276,0.130
+GO:0006310,DNA recombination,25,1,0.02,27,0.02283,0.02283,0.02283,0.118

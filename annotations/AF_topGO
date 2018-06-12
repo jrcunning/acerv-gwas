@@ -1,0 +1,43 @@
+
+------------------------- topGOdata object -------------------------
+
+ Description:
+   -  My project 
+
+ Ontology:
+   -  BP 
+
+ 19284 available genes (all genes from the array):
+   - symbol:  XP_015764220 XP_015754577 XP_015754578 XP_015757060 XP_015776850  ...
+   - 23  significant genes. 
+
+ 7593 feasible genes (genes that can be used in the analysis):
+   - symbol:  XP_015764220 XP_015764225 XP_015776855 XP_015776856 XP_015752480  ...
+   - 7  significant genes. 
+
+ GO graph (nodes with at least  1  genes):
+   - a graph with directed edges
+   - number of nodes = 2044 
+   - number of edges = 4493 
+
+------------------------- topGOdata object -------------------------
+
+       GO.ID                                        Term Annotated Significant
+1 GO:0030488                            tRNA methylation         1           1
+2 GO:0035278    miRNA mediated inhibition of translation         1           1
+3 GO:0097428 protein maturation by iron-sulfur cluste...         3           1
+4 GO:0006310                           DNA recombination        25           1
+  Expected Rank in classicFisher classicFisher elimFisher topgoFisher
+1     0.00                     1       0.00092    0.00092     0.00092
+2     0.00                     2       0.00092    0.00092     0.00092
+3     0.00                     5       0.00276    0.00276     0.00276
+4     0.02                    27       0.02283    0.02283     0.02283
+  parentchildFisher
+1             0.063
+2             0.250
+3             0.130
+4             0.118
+[1] "Term GO:0030488 genes: XP_015772969"
+[1] "Term GO:0035278 genes: XP_015752860"
+[1] "Term GO:0097428 genes: XP_015771653"
+[1] "Term GO:0006310 genes: XP_015752860"
